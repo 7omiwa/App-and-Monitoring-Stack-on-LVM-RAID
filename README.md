@@ -35,6 +35,8 @@ Adjust the playbook.yml file it contains
 
 ## Monitoring the storage 
 Start Grafana service and attach [dashboard.json](monitor.sh)
+<img width="250" height="286" alt="image" src="https://github.com/user-attachments/assets/f27d061c-40a4-4ce3-b190-4957a95be284" />
+
 
 
 
