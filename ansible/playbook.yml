@@ -46,23 +46,23 @@
          enabled: yes
 
 # ----------------------Install Prometheus------------------
-#
-#    - name: Downlaod prometheus tarball
-#      get_url:
-#        url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
-#        dest: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
-#
-#    - name: Extract prometheus tarball
-#      unarchive:
-#          src: "prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
-#          dest: /opt/
-#          remote_src: yes
-#
-#    - name: Create symlink for prmetheus binary
-#      file:
-#        src: "prometheus-{{prometheus_version}}.linux-amd64/prometheus"
-#        dest: "/usr/local/bin/prometheus"
-#        state: link
+
+    - name: Downlaod prometheus tarball
+      get_url:
+        url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+        dest: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+
+    - name: Extract prometheus tarball
+      unarchive:
+          src: "prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+          dest: /opt/
+          remote_src: yes
+
+    - name: Create symlink for prmetheus binary
+      file:
+        src: "prometheus-{{prometheus_version}}.linux-amd64/prometheus"
+        dest: "/usr/local/bin/prometheus"
+        state: link
 
 
     - name: Create prometheus systemd service
@@ -99,11 +99,11 @@
 
 #----------------------Install Node Exporter------------------
 
-#    - name: Install node_exporter
-#      apt:
-#        name: prometheus-node-exporter
-#        state: present
-#        update_cache: yes
+    - name: Install node_exporter
+      apt:
+        name: prometheus-node-exporter
+        state: present
+        update_cache: yes
 
     - name: Ensure node_exporter is running
       service:
@@ -116,7 +116,7 @@
        # ------Write Dockerfile-------
     - name: Create Dockerfile
       copy:
-          dest: /mnt/app/Dockerfile
+          dest: /Dockerfile
           content: |
              # States the Base Image
              FROM python:3.10-slim
@@ -136,7 +136,7 @@
              CMD ["python", "app.py"]
 
        # ------  Write Compose--------------
-
+# To avoid indentartion issues copy or adjust content in docker-compose.yml.j2 to adjust docker-compose
     - name: Create Compose
       template:
         src: "/mnt/app/ansible-proj/docker-compose.yml.j2"
