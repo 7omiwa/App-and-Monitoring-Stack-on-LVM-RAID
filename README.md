@@ -34,7 +34,8 @@ Adjust the playbook.yml file it contains
 ```
 
 ## Monitoring the storage 
-start Gr
+Start Grafana service and attach [dashboard.json](monitor.sh)
+
 
 
 
