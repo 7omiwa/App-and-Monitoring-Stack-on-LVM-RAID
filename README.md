@@ -1,4 +1,4 @@
-# Provisioned-Infrastructure
+ # Provisioned-Infrastructure
 Provisioned Infra with LVM + RAID + Ansible + Monitoring
 
 ## Disk Image Creation (Optional)
@@ -34,8 +34,40 @@ Adjust the playbook.yml file it contains
 ```
 
 ## Monitoring the storage 
-Start Grafana service and attach [dashboard.json](monitor.sh)
+To start Grafana service and attach [dashboard.json](Dashboard.json)
+Run 
+```bash
+sudo bash monitor.sh
+```
+what it contains 
+|      RAID Layer        |  LVM Layer        |   Docker Layer         |    App Layer     |
+|------------------------|-------------------|------------------------|------------------|
+| RAID 5 disk Status     | lv_app usage %    | Container CPU & Memory | Requests-per-min |
+| RAID Write/Read (MB/s) | lv_logs usage %   | Restarts               | Error Rate       |
+
+
+### Note :
+I noticed defaultly, node_exporter only exposes RAID device metrics (e.g. node_md_disks{device="md0"}) and does not provide per-disk metrics within the array (e.g. you cannot filter disk="loop19" for a specific member of md0).
+To work around this, I created a small Bash script [md_loop_exporter.sh](md_loop_exporter.sh) that generates custom per-disk RAID metrics and writes them to the textfile collector directory, allowing Prometheus to scrape them.
+### Setup
+```bash
+sudo nano /usr/local/bin/md_loop_exporter.sh
+sudo chmod +x /usr/local/bin/md_loop_exporter.sh
+
+sudo mkdir -p /var/lib/node_exporter/textfile_collector
+sudo chown node_exporter:node_exporter /var/lib/node_exporter/textfile_collector
+sudo chmod 755 /var/lib/node_exporter/textfile_collector
+
+# Test
+sudo /usr/local/bin/md_loop_exporter.sh
+cat /var/lib/node_exporter/textfile_collector/md_loop.prom
+
+# Run every minute
+sudo crontab -e -u node_exporter
+* * * * * /usr/local/bin/md_loop_exporter.sh
+```
 <img width="250" height="286" alt="image" src="https://github.com/user-attachments/assets/f27d061c-40a4-4ce3-b190-4957a95be284" />
+
 
 
 
