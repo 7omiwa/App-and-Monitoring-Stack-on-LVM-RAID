@@ -44,6 +44,7 @@ what it contains
 |------------------------|-------------------|------------------------|------------------|
 | RAID 5 disk Status     | lv_app usage %    | Container CPU & Memory | Requests-per-min |
 | RAID Write/Read (MB/s) | lv_logs usage %   | Restarts               | Error Rate       |
+<img width="1513" height="502" alt="image" src="https://github.com/user-attachments/assets/7ca2a467-9b84-469b-90c6-4dfcf657dddb" />
 
 
 ### Note :
